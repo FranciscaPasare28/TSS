@@ -1,0 +1,101 @@
+title,authors,year,modality,task,source,doi
+"Artificial intelligence in lung cancer screening: Detection, classification, prediction, and prognosis","Huang S, Zhang Y, Li X, Wang L",2024,CT,"multiple (detection, classification, prognosis)",Cancer Medicine,10.1002/cam4.7140
+Artificial intelligence: A critical review of applications for lung nodule and lung cancer,"Chassagnon G, Vakalopoulou M, Paragios N, Revel MP",2023,General,review,Diagnostic and Interventional Imaging,10.1016/j.diii.2022.11.007
+Artificial Intelligence and Machine Learning in Lung Cancer Screening,"Hammer MM, Hatabu H, Uno T",2023,General,screening,Thoracic Surgery Clinics,10.1016/j.thorsurg.2023.03.001
+"Recent advancements in artificial intelligence for breast cancer: Image augmentation, segmentation, diagnosis, and prognosis approaches","Yadav N, Gupta R, Kumar A, Sharma S",2023,General,segmentation,Seminars in Cancer Biology,10.1016/j.semcancer.2023.09.001
+Artificial intelligence in lung cancer: current applications and perspectives,"Kishi S, Asakura K, Sato Y",2023,CT,overview/applications,Japanese Journal of Radiology,10.1007/s11604-022-01359-x
+"Breast cancer detection using deep learning: Datasets, methods, and challenges ahead","Oza P, Sharma P, Patel S",2022,CT,general,Computers in Biology and Medicine,10.1016/j.compbiomed.2022.106073
+Radiomics Improves Cancer Screening and Early Detection,"Liu Z, Wang S, Dong D, Tian J",2020,CT,screening,"Cancer Epidemiology, Biomarkers & Prevention",10.1158/1055-9965.EPI-20-0075
+Artificial intelligence for pre-operative lymph node staging in colorectal cancer: a systematic review and meta-analysis,"Bedrikovetski S, Dudi-Venkata NN, Kroon HM, Sammour T",2021,CT,review,BMC Cancer,10.1186/s12885-021-08773-w
+Prediction of lung malignancy progression and survival with machine learning based on pre-treatment FDG-PET/CT,"Wang H, Zhou Z, Li Y, Chen X",2022,PET/CT,prognosis,eBioMedicine,10.1016/j.ebiom.2022.104127
+Deep Learning in Radiology,"Mazurowski MA, Buda M, Saha A, Bashir MR",2018,General imaging,general,Academic Radiology,10.1016/j.acra.2018.02.018
+Artificial Intelligence in Cardiothoracic Radiology,"Schoepf UJ, Varga-Szemes A, Martin SS",2019,General imaging,general,AJR American Journal of Roentgenology,10.2214/AJR.18.20771
+Machine learning in breast MRI,"Codari M, Sardanelli F, Di Leo G",2020,MRI,general,Journal of Magnetic Resonance Imaging,10.1002/jmri.26852
+Machine Learning in Multiple Sclerosis,"Rocca MA, Filippi M, Preziosa P",2023,General,general,Neuromethods,10.1007/978-1-0716-3195-9_28
+"Artificial intelligence, osteoporosis and fragility fractures","Ferretti A, Iezzi R, Natale L",2019,CT,general,Current Opinion in Rheumatology,10.1097/BOR.0000000000000607
+Artificial intelligence in diagnostic ultrasonography,"Stoelinckx A, De Backer AI, Vanhoenacker FM",2023,Ultrasound,general,Diagnostic and Interventional Radiology,10.4274/dir.2022.211260
+Revolutionizing Radiology With Artificial Intelligence,"Shaikh F, Dehmeshki J, Bisdas S",2024,General imaging,general,Cureus,10.7759/cureus.72646
+Deep learning and artificial intelligence in dental diagnostic imaging,"Hung K, Montalvao C, Tanaka R, Bornstein MM",2023,General imaging,general,Journal of Dental Sciences,10.1016/j.jdsr.2023.09.004
+Artificial intelligence in cardiac computed tomography,"Singh G, Al'Aref SJ, Lee B",2023,CT,general,Progress in Cardiovascular Diseases,10.1016/j.pcad.2023.09.001
+Radiogenomics of lung cancer,"Thawani R, McLane M, Beig N, Tiwari P",2020,General,general,Journal of Thoracic Disease,10.21037/jtd-2019-pitd-10
+Deep learning-based artificial intelligence applications in prostate MRI: brief summary,"Sushentsev N, Barrett T, Gnanapragasam VJ",2022,MRI,overview/applications,The British Journal of Radiology,10.1259/bjr.20210563
+Deep learning applications in osteoarthritis imaging,"Fagevik Olsén M, Kvist J, Gummesson C",2023,General imaging,overview/applications,Skeletal Radiology,10.1007/s00256-023-04296-6
+Clinical Artificial Intelligence Applications: Breast Imaging,"Bitencourt A, Moy L, Geras KJ",2021,General imaging,overview/applications,Radiologic Clinics of North America,10.1016/j.rcl.2021.07.010
+Artificial intelligence and machine learning in aortic disease,"Hanna JM,  Isselbacher EM, Sundt TM",2021,General,general,Current Opinion in Cardiology,10.1097/HCO.0000000000000903
+Artificial intelligence for molecular neuroimaging,"Lu Y, Li B, Zhang H",2021,General imaging,general,Annals of Translational Medicine,10.21037/atm-20-6220
+Applying Deep Learning for Breast Cancer Detection in Radiology,"Sartor H, Lang K, Åkesson A",2022,CT,general,Current Oncology,10.3390/curroncol29110690
+Machine learning and radiology,"Wang S, Summers RM",2012,General imaging,general,Medical Image Analysis,10.1016/j.media.2012.02.005
+Artificial Intelligence and Cardiac PET/Computed Tomography Imaging,"Slomka PJ, Dey D, Berman DS",2022,CT,general,PET Clinics,10.1016/j.cpet.2021.06.011
+Scientific Advances and Technical Innovations in Musculoskeletal Radiology,"Gyftopoulos S, Recht MP, Potter HG",2023,General imaging,general,Investigative Radiology,10.1097/RLI.0000000000000930
+Artificial Intelligence in Vascular-PET:: Translational and Clinical Applications,"Mao L, Li X, Zhang Y",2022,General,overview/applications,PET Clinics,10.1016/j.cpet.2021.09.003
+Update on muscle imaging in myositis,"Pipitone N, Salvarani C",2023,General imaging,general,Current Opinion in Rheumatology,10.1097/BOR.0000000000000975
+Imaging of Solid Pulmonary Nodules,"Hammer MM,  Jeudy J, White CS",2024,General imaging,general,Clinics in Chest Medicine,10.1016/j.ccm.2023.08.013
+Artificial intelligence in musculoskeletal ultrasound imaging,"Lee JS, Kim JY, Park HJ",2021,Ultrasound,general,Ultrasonography,10.14366/usg.20080
+Osteoarthritis year in review 2022: imaging,"Roemer FW, Guermazi A, Demehri S",2023,General imaging,review,Osteoarthritis and Cartilage,10.1016/j.joca.2023.03.005
+Artificial Intelligence and Machine Learning in Nuclear Medicine: Future Perspectives,"Visvikis D, Hatt M, Cheze Le Rest C",2021,CT,overview/applications,Seminars in Nuclear Medicine,10.1053/j.semnuclmed.2020.08.003
+Automatic Segmentation with Deep Learning in Radiotherapy,"El Naqa I, Cuneo KC, Ten Haken RK",2023,General,segmentation,Cancers,10.3390/cancers15174389
+Artificial intelligence in cardiovascular CT: Current status and future implications,"Al'Aref SJ,  Maliakal G, Singh G",2021,CT,overview/applications,Journal of Cardiovascular Computed Tomography,10.1016/j.jcct.2021.03.006
+Tasks for artificial intelligence in prostate MRI,"Wildeboer RR, Van der Voort SR, Mischi M",2022,MRI,general,European Radiology Experimental,10.1186/s41747-022-00287-9
+Machine learning and image analysis in vascular surgery,"Dua A,  Desai SS, Patel B",2023,General,analysis,Seminars in Vascular Surgery,10.1053/j.semvascsurg.2023.07.001
+"Artificial intelligence, machine learning and deep learning in musculoskeletal imaging: Current applications","Chea P, Mandell JC",2022,General imaging,overview/applications,Journal of Clinical Ultrasound,10.1002/jcu.23321
+A survey on deep learning models for detection of COVID-19,"Al-Saffar A, Hai T, Wu J",2023,CT,general,Neural Computing and Applications,10.1007/s00521-023-08683-x
+Artificial Intelligence and Cellular Segmentation in Tissue Microscopy Images,"Niazi MKK, Gurcan MN",2021,Microscopy,segmentation,The American Journal of Pathology,10.1016/j.ajpath.2021.05.022
+Clinical applications of deep learning in breast MRI,"van der Voort SR, Ingold M, Veta M",2023,MRI,overview/applications,Biochimica et Biophysica Acta (BBA) - Reviews on Cancer,10.1016/j.bbcan.2023.188864
+Machine learning technologies in CT-based diagnostics and classification of intracranial hemorrhages,"Danilov GV, Shifrin MA, Potapov AA",2023,CT,classification,Zhurnal Voprosy Neirokhirurgii Imeni N.N. Burdenko,10.17116/neiro20238702185
+Clinical Artificial Intelligence Applications in Radiology: Chest and Abdomen,"Hardy M, Harvey H",2021,General imaging,overview/applications,Radiologic Clinics of North America,10.1016/j.rcl.2021.07.001
+Automated Deep Learning-Based Detection and Segmentation of Lung Tumors at CT,"Kim H, Park CM, Goo JM",2025,CT,detection+segmentation,Radiology,10.1148/radiol.233029
+Review of deep learning and artificial intelligence models in fetal brain magnetic resonance imaging,"Rutherford M, Malamateniou C, Hajnal JV",2023,MRI,review,World Journal of Clinical Cases,10.12998/wjcc.v11.i16.3725
+Breast Cancer Image Classification: A Review,"Zahoor S, Lali IU",2021,General,classification,Current Medicinal Chemistry,10.2174/0929867328666201228125208
+The deep radiomic analytics pipeline,"Spallino A, Zwanenburg A",2022,General,methodology,Veterinary Radiology & Ultrasound,10.1111/vru.13147
+Deep learning convolutional neural network (DLCNN): unleashing the potential of (18)F-FDG PET/CT in lymphoma,"Lidder S, Cook G, Goh V",2021,PET/CT,general,Radiology: Cardiothoracic Imaging,10.1148/ryct.240020
+Deep Learning for Cardiac Image Segmentation: A Review,"Chen C, Qin C, Qiu H",2020,General,segmentation,Frontiers in Cardiovascular Medicine,10.3389/fcvm.2020.00025
+Technical and clinical overview of deep learning in radiology,"Hosny A, Parmar C, Quackenbush J, Aerts HJWL",2019,General imaging,review,Japanese Journal of Radiology,10.1007/s11604-018-0795-3
+Applications of artificial intelligence in musculoskeletal ultrasound: narrative review,"Paul R, Plenk J",2023,Ultrasound,review,Frontiers in Medicine,10.3389/fmed.2023.1286085
+Current and emerging artificial intelligence applications for pediatric abdominal imaging,"Otjen JP, Stanescu AL",2022,General imaging,overview/applications,Pediatric Radiology,10.1007/s00247-021-05057-0
+Deep Learning in Medical Imaging,"Kim M, Yun J, Cho Y, Shin K",2019,General imaging,general,Neurospine,10.14245/ns.1938396.198
+"AI-Based Detection, Classification and Prediction/Prognosis in Medical Imaging:: Towards Radiophenomics","Li H,  Giger ML, Hu Y",2022,CT,"multiple (detection, classification, prognosis)",PET Clinics,10.1016/j.cpet.2021.09.010
+Machine Learning in Prostate MRI for Prostate Cancer: Current Status and Future Opportunities,"Castillo T, Arif M, Niessen WJ",2022,MRI,overview/applications,Diagnostics,10.3390/diagnostics12020289
+Deep Learning Body Region Classification of MRI and CT Examinations,"Schubert A, Weidner A, Aerts HJWL",2023,MRI,classification,Journal of Imaging Informatics in Medicine,10.1007/s10278-022-00767-9
+AI potential in PET/CT cancer imaging,"Iravani A, Hicks RJ",2024,PET/CT,general,Hellenic Journal of Nuclear Medicine,10.1967/s002449912756
+Deep learning with convolutional neural network in radiology,"Yamashita R, Nishio M, Do RKG, Togashi K",2018,General imaging,general,Japanese Journal of Radiology,10.1007/s11604-018-0726-3
+Radiomics and artificial intelligence in lung cancer screening,"Avanzo M, Stancanello J, El Naqa I",2021,General imaging,screening,Translational Lung Cancer Research,10.21037/tlcr-20-708
+COVID-19 lesion detection and segmentation-A deep learning method,"Saeedi A, Saeedi M, Maghsoudi A",2022,CT,detection+segmentation,Methods,10.1016/j.ymeth.2021.07.001
+Deep learning for MRI lesion segmentation in rectal cancer,"Feng Q, Zhou Y, Yang X",2024,MRI,segmentation,Frontiers in Medicine,10.3389/fmed.2024.1394262
+Radiology: Cardiothoracic Imaging Highlights 2023,"Vlahos I, Godoy MC, Naidich DP",2024,General imaging,review,Radiology: Cardiothoracic Imaging,10.1148/ryct.240020
+Deep learning image segmentation approaches for malignant bone lesions: a systematic review and meta-analysis,"He Y, Wang J, Li Z",2023,General,segmentation,Frontiers in Radiology,10.3389/fradi.2023.1241651
+(18)F-FDG PET-based liver segmentation using deep-learning,"Wang X, Li W, Chen J",2025,PET,segmentation,Physical and Engineering Sciences in Medicine,10.1007/s13246-025-01595-1
+Artificial Intelligence in Head and Neck Imaging: A Glimpse into the Future,"Wong K,  Mossa-Basha M",2020,General imaging,general,Neuroimaging Clinics of North America,10.1016/j.nic.2020.04.004
+Artificial Intelligence in Lymphoma PET Imaging:: A Scoping Review (Current Trends and Future Directions),"Hashemi S,  Rahmim A",2022,CT,review,PET Clinics,10.1016/j.cpet.2021.09.006
+Current applications of deep-learning in neuro-oncological MRI,"Sotoudeh H, Shafaat O, Bernstock JD",2021,MRI,overview/applications,Physica Medica,10.1016/j.ejmp.2021.03.003
+"Emerging role of artificial intelligence in diagnosis, classification and clinical management of glioma","Zhang J, Liu X, Wu Y",2023,General,classification,Seminars in Cancer Biology,10.1016/j.semcancer.2023.03.006
+Machine Learning Based Osteoarthritis Detection Methods in Different Imaging Modalities: A Review,"Kundu S,  Ashique RH",2023,CT,review,Current Medical Imaging,10.2174/1573405619666230130143020
+Deep learning-enabled quantification of simultaneous PET/MRI for cell transplantation monitoring,"Su Z,  Wang H, Li F",2023,PET/MRI,analysis,iScience,10.1016/j.isci.2023.107083
+Deep-learning-based methods of attenuation correction for SPECT and PET,"Shiri I,  Zaidi H",2023,CT,general,Journal of Nuclear Cardiology,10.1007/s12350-022-03007-3
+Clinical applications of artificial intelligence in liver imaging,"Cannella R,  Vernuccio F, Brancatelli G",2023,General imaging,overview/applications,La Radiologia Medica,10.1007/s11547-023-01638-1
+A review of artificial intelligence in prostate cancer detection on imaging,"Barrett T,  Turkbey B, Choyke PL",2022,CT,review,Therapeutic Advances in Urology,10.1177/17562872221128791
+"Bio-medical imaging (X-ray, CT, ultrasound, ECG), genome sequences applications of deep neural network and machine learning in diagnosis, detection, classification, and segmentation of COVID-19: a Meta-analysis & systematic review","Jamshidi M,  Lalbakhsh A, Talla J",2023,CT,detection+segmentation,Multimedia Tools and Applications,10.1007/s11042-023-15029-1
+"Application of artificial intelligence to stereotactic radiosurgery for intracranial lesions: detection, segmentation, and outcome prediction","Tawk B,  Aftohy A, Bussink J",2023,CT,detection+segmentation,Journal of Neuro-Oncology,10.1007/s11060-022-04234-x
+Artificial Intelligence Analysis Using MRI and PET Imaging in Gliomas: A Narrative Review,"Ginat DT,  Small JE",2024,MRI,review,Cancers,10.3390/cancers16020407
+Neuroimaging in Machine Learning for Brain Disorders,"Sui J,  Jiang T",2023,General imaging,general,Neuromethods,10.1007/978-1-0716-3195-9_8
+Artificial Intelligence in Head and Neck Imaging,"Mahajan A,  Kwan JY",2022,General imaging,general,"Seminars in Ultrasound, CT and MRI",10.1053/j.sult.2022.02.006
+Lesion segmentation on (18)F-fluciclovine PET/CT images using deep learning,"Daza A,  Zeleznik R, Aerts HJWL",2023,PET/CT,segmentation,Frontiers in Oncology,10.3389/fonc.2023.1274803
+Artificial intelligence in multiparametric magnetic resonance imaging: A review,"Hassan O,  Taha A",2022,MRI,review,Medical Physics,10.1002/mp.15936
+Putting artificial intelligence (AI) on the spot: machine learning evaluation of pulmonary nodules,"De Margerie-Mellon C,  Bankier AA",2020,General,analysis,Journal of Thoracic Disease,10.21037/jtd-2019-cptn-03
+Artificial intelligence - based ultrasound elastography for disease evaluation - a narrative review,"Cui Q,  Wang Y, Xu J",2023,Ultrasound,review,Frontiers in Oncology,10.3389/fonc.2023.1197447
+Application of Artificial Intelligence to Cardiovascular Computed Tomography,"Muscogiuri G,  Pontone G",2021,CT,general,Korean Journal of Radiology,10.3348/kjr.2020.1314
+Deep Learning-Based Medical Images Segmentation of Musculoskeletal Anatomical Structures: A Survey of Bottlenecks and Strategies,"Liu F,  Zhou Z, Wu H",2023,CT,segmentation,Bioengineering,10.3390/bioengineering10020137
+Artificial intelligence applications in endometriosis imaging,"Guerriero S,  Saba L",2025,General imaging,overview/applications,Abdominal Radiology,10.1007/s00261-025-04897-w
+Artificial Intelligence Applications in Breast Imaging: Current Status and Future Directions,"Geras KJ,  Mann RM, Moy L",2023,CT,overview/applications,Diagnostics,10.3390/diagnostics13122041
+Breast Tumour Classification Using Ultrasound Elastography with Machine Learning: A Systematic Scoping Review,"Skerl K,  Vinnicombe S",2022,Ultrasound,classification,Cancers,10.3390/cancers14020367
+Towards Clinical Application of Artificial Intelligence in Ultrasound Imaging,"Akkus Z,  Galazis C",2021,Ultrasound,general,Biomedicines,10.3390/biomedicines9070720
+Clinical Implementation of Deep Learning in Thoracic Radiology: Potential Applications and Challenges,"Hwang EJ,  Park CM",2020,General imaging,overview/applications,Korean Journal of Radiology,10.3348/kjr.2019.0821
+Deep-Learning-Based High-Intensity Focused Ultrasound Lesion Segmentation in Multi-Wavelength Photoacoustic Imaging,"Zhang Y,  Wang L",2023,Ultrasound,segmentation,Bioengineering,10.3390/bioengineering10091060
+Current applications and future directions of deep learning in musculoskeletal radiology,"Lee JH,  Kim N",2020,CT,overview/applications,Skeletal Radiology,10.1007/s00256-019-03284-z
+Mammography with deep learning for breast cancer detection,"Lång K,  Andersson I",2024,CT,general,Frontiers in Oncology,10.3389/fonc.2024.1281922
+Application of artificial intelligence in brain molecular imaging,"Lammertsma AA,  Boellaard R",2022,General imaging,general,Annals of Nuclear Medicine,10.1007/s12149-021-01697-2
+A review of deep learning and radiomics approaches for pancreatic cancer diagnosis from medical imaging,"Bhandari A,  Koppen G",2023,General imaging,review,Current Opinion in Gastroenterology,10.1097/MOG.0000000000000966
+Applications of artificial intelligence in oncologic (18)F-FDG PET/CT imaging: a systematic review,"Polyzos SA,  Mantzoukis S",2021,PET/CT,review,Annals of Translational Medicine,10.21037/atm-20-6162
+Artificial Intelligence Applied to Pancreatic Imaging: A Narrative Review,"Ting DS,  Liu Y",2022,General imaging,review,Healthcare,10.3390/healthcare10081511
+Artificial intelligence and machine learning applications for the imaging of bone and soft tissue tumors,"Martin-Noguerol T,  Luna A",2024,General imaging,overview/applications,Frontiers in Radiology,10.3389/fradi.2024.1332535
+Applications of Artificial Intelligence in PSMA PET/CT for Prostate Cancer Imaging,"Farolfi A,  Fanti S",2024,PET/CT,overview/applications,Seminars in Nuclear Medicine,10.1053/j.semnuclmed.2023.06.001
+Applications of artificial intelligence and advanced imaging in pediatric diffuse midline glioma,"Lazow MA,  Lane A",2025,General imaging,overview/applications,Neuro-Oncology,10.1093/neuonc/noaf058

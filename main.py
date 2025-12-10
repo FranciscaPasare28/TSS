@@ -8,9 +8,11 @@ import seaborn as sns
 import pandas as pd
 import streamlit.components.v1 as components
 from wordcloud import WordCloud
+from fpdf import FPDF
+import tempfile
 import os
 
-# --- CONFIGURARE PAGINĂ ---
+# --- CONFIGURARE PAGINA ---
 st.set_page_config(
     page_title="LitStudy Pro - Analiză Bibliometrică",
     layout="wide",
@@ -33,23 +35,28 @@ st.markdown("### Instrument pentru analiza automată a literaturii științifice
 st.sidebar.header("1. Sursă Date")
 sursa_date = st.sidebar.radio("Metoda de import:", ("Căutare Live (DBLP)", "Fișier Local"))
 
-# Inițializăm session_state pentru a nu pierde datele la refresh (filtrare)
+# Initializam session_state pentru a nu pierde datele la refresh (filtrare)
 if 'docs' not in st.session_state:
     st.session_state['docs'] = []
 
-# --- FUNCȚIE DE NORMALIZARE (FIX PENTRU TOATE FORMATELE) ---
+if 'figures' not in st.session_state:
+    st.session_state['figures'] = {}
+if 'nmf_topics' not in st.session_state:
+    st.session_state['nmf_topics'] = None
+
+# --- FUNCTIE DE NORMALIZARE (FIX PENTRU TOATE FORMATELE) ---
 def normalize_documents(new_docs):
     """
-    Această funcție repară datele lipsă din obiectele litstudy,
-    indiferent dacă vin din CSV, BIB sau RIS.
+    Aceasta functie repara datele lipsa din obiectele litstudy,
+    indiferent daca vin din CSV, BIB sau RIS.
     """
     count_fixed = 0
     for new_doc in new_docs:
-        # 1. FIX SOURCE (Jurnal/Conferință)
-        # Dacă 'source' lipsește, încercăm să îl găsim în alte câmpuri standard BibTeX/RIS
+        # FIX SOURCE (Jurnal/Conferinta)
+        # Daca 'source' lipseste, incercam sa il gasim in alte campuri standard BibTeX/RIS
         if not hasattr(new_doc, 'source') or not new_doc.source or str(new_doc.source).lower() == 'nan':
             new_source = None
-            # Ordinea de prioritate pentru a găsi sursa:
+            # Ordinea de prioritate pentru a gasi sursa:
             if hasattr(new_doc, 'journal') and new_doc.journal:
                 new_source = new_doc.journal
             elif hasattr(new_doc, 'booktitle') and new_doc.booktitle:
@@ -57,15 +64,44 @@ def normalize_documents(new_docs):
             elif hasattr(new_doc, 'publisher') and new_doc.publisher:
                 new_source = new_doc.publisher
             
-            # Aplicăm sursa găsită
+            # Aplicam sursa gasita
             if new_source:
                 new_doc.source = str(new_source)
                 count_fixed += 1
             else:
-                new_doc.source = "Unknown" # Ca să nu crape graficul
+                new_doc.source = "Unknown" # Ca sa nu crape graficul
     return new_docs, count_fixed
 
-# LOGICA DE ÎNCĂRCARE
+def clean_text(text):
+    """Curata textul de diacritice pentru PDF"""
+    if not isinstance(text, str): return str(text)
+    replacements = {'ă':'a', 'â':'a', 'î':'i', 'ș':'s', 'ț':'t', 'Ă':'A', 'Â':'A', 'Î':'I', 'Ș':'S', 'Ț':'T', '„':'"', '”':'"', '–':'-'}
+    for k, v in replacements.items():
+        text = text.replace(k, v)
+    return text.encode('latin-1', 'replace').decode('latin-1')
+
+# --- CLASA GENERARE PDF ---
+class PDFReport(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 16)
+        self.cell(0, 10, 'LitStudy Pro - Raport', 0, 1, 'C')
+        self.ln(5)
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, f'Pagina {self.page_no()}', 0, 0, 'C')
+    def chapter_title(self, title):
+        self.set_font('Arial', 'B', 12)
+        self.set_fill_color(200, 220, 255)
+        self.cell(0, 10, clean_text(title), 0, 1, 'L', 1)
+        self.ln(4)
+    def chapter_body(self, body):
+        self.set_font('Arial', '', 11)
+        self.multi_cell(0, 10, clean_text(body))
+        self.ln()
+# ==============================
+
+# LOGICA DE INCARCARE
 new_docs = []
 
 if 'regenerate_word_cloud' not in st.session_state:
@@ -99,39 +135,39 @@ else:
         try:
             with st.spinner('Se procesează fișierul...'):
                 if temp_name.endswith(".csv"):
-                    # 1. CITIM CU PANDAS PENTRU A REPARA DATELE
+                    # CITIM CU PANDAS PENTRU A REPARA DATELE
                     df_temp = pd.read_csv(temp_name)
                     
-                    # Normalizăm numele coloanelor la litere mici (Source -> source)
+                    # Normalizam numele coloanelor la litere mici (Source -> source)
                     df_temp.columns = df_temp.columns.str.lower()
 
                     # Redenumim 'link' -> 'doi' pentru Litstudy
                     if 'link' in df_temp.columns and 'doi' not in df_temp.columns:
                         df_temp.rename(columns={'link': 'doi'}, inplace=True)
                     
-                    # Salvăm CSV-ul temporar corectat
+                    # Salvam CSV-ul temporar corectat
                     df_temp.to_csv(temp_name, index=False)
                     
-                    # Încărcăm documentele de bază
+                    # Incarcam documentele de baza
                     docs = litstudy.load_csv(temp_name)
                     
                     # --- FIX CRITIC PENTRU SURSE ---
-                    # Litstudy ignoră coloana 'source' dacă nu e standard. O injectăm manual.
+                    # Litstudy ignora coloana 'source' daca nu e standard. O injectam manual.
                     if 'source' in df_temp.columns:
                         for i, doc in enumerate(docs):
                             if i < len(df_temp):
                                 val = df_temp.iloc[i]['source']
-                                # Dacă avem o valoare validă în CSV, o punem în obiectul doc
+                                # Daca avem o valoare valida in CSV, o punem in obiectul doc
                                 if not pd.isna(val) and str(val).lower() != 'nan':
                                     doc.source = str(val)
-                                    # Putem completa și jurnalul pentru siguranță
+                                    # Putem completa si jurnalul pentru siguranta
                                     doc.journal = str(val)
                 elif temp_name.endswith(".bib"):
                     docs = litstudy.load_bibtex(temp_name)
                 elif temp_name.endswith(".ris"):
                     docs = litstudy.load_ris(temp_name)
 
-                # --- APLICĂM NORMALIZAREA PENTRU TOATE ---
+                # --- APLICAM NORMALIZAREA PENTRU TOATE ---
                 docs, fixed_count = normalize_documents(docs)
                 st.session_state['docs'] = docs
                 st.sidebar.success(f"Fișier procesat: {len(docs)} articole")
@@ -141,7 +177,7 @@ else:
         except Exception as e:
             st.sidebar.error(f"Eroare fișier: {e}")
 
-# Preluăm documentele din memorie
+# Preluam documentele din memorie
 docs = st.session_state['docs']
 
 # --- SISTEM DE FILTRARE ---
@@ -159,8 +195,7 @@ if docs:
         sel_years = st.sidebar.slider("📅 Interval Ani", min_y, max_y, (min_y, max_y), key='my_slider', on_change=slider_change_callback)
         filtered_docs = [d for d in filtered_docs if d.publication_year and sel_years[0] <= d.publication_year <= sel_years[1]]
 
-    # TO FIX
-    # B. Filtru Sursă (Jurnal)
+    # B. Filtru Sursa (Jurnal)
     sources = list(set([d.source for d in docs if hasattr(d, 'source') and d.source]))
     if sources:
         sel_source = st.sidebar.multiselect("📖 Filtru Jurnal/Conferință", sources)
@@ -169,9 +204,8 @@ if docs:
 
     st.sidebar.info(f"Se analizează: **{len(filtered_docs)}** / {len(docs)} articole")
 
-# --- INTERFAȚA PRINCIPALĂ ---
+# --- INTERFATA PRINCIPALA ---
 if filtered_docs:
-    # Definim 4 Tab-uri pentru a acoperi toate cerințele
     tab1, tab2, tab3, tab4 = st.tabs([
         "📊 Dashboard Statistici", 
         "🧠 Topic Modeling (NLP)", 
@@ -189,23 +223,25 @@ if filtered_docs:
             fig1 = plt.figure(figsize=(8, 4))
             litstudy.plot_year_histogram(filtered_docs)
             st.pyplot(fig1, use_container_width=True)
+            st.session_state['figures']['years'] = fig1
             
         with col2:
             st.markdown("**Top Autori**")
             fig2 = plt.figure(figsize=(8, 4))
             litstudy.plot_author_histogram(filtered_docs, limit=10)
             st.pyplot(fig2, use_container_width=True)
+            st.session_state['figures']['authors'] = fig2
 
         st.markdown("---")
         
-        # Statistici Extra: Surse
+        # Statistici Surse
         col3, col4 = st.columns(2)
         with col3:
             st.markdown("**Top Surse de Publicare**") 
             
             sources_list = []
             for d in filtered_docs:
-                # Verificăm dacă avem atributul source și dacă nu e "Unknown"
+                # Verificam daca avem atributul source si daca nu e "Unknown"
                 if hasattr(d, 'source') and d.source and str(d.source) != "nan":
                     sources_list.append(d.source)
                 elif hasattr(d, 'publisher') and d.publisher:
@@ -218,21 +254,22 @@ if filtered_docs:
                 s_counts.plot(kind='bar', ax=ax, color='#4682B4') 
                 
                 ax.set_ylabel("Nr. Articole")
-                ax.set_xlabel("") # Scoatem eticheta de jos ca să fie mai curat
+                ax.set_xlabel("") # Scoatem eticheta de jos ca sa fie mai curat
                 
-                # Rotim etichetele de jos pentru a se citi ușor
+                # Rotim etichetele de jos pentru a se citi usor
                 plt.xticks(rotation=45, ha='right')
                 
-                # Ajustăm marginile ca să nu taie textul
+                # Ajustam marginile ca sa nu taie textul
                 plt.tight_layout()
                 
                 st.pyplot(fig3, use_container_width=True)
+                st.session_state['figures']['sources'] = fig3
             else:
                 st.warning("Nu au fost găsite informații despre Jurnal/Conferință în date.")
 
         with col4:
             st.markdown("**Word Cloud (Din Titluri)**")
-            # Generare rapidă WordCloud
+            # Generare WordCloud
             text = " ".join([d.title for d in filtered_docs if d.title])
             if text:
                 if 'wc' not in st.session_state:
@@ -246,6 +283,7 @@ if filtered_docs:
                 plt.imshow(wc, interpolation='bilinear')
                 plt.axis("off")
                 st.pyplot(fig_wc, use_container_width=True)
+                st.session_state['figures']['wordcloud'] = fig_wc
 
     # === TAB 2: TOPIC MODELING (Implementare "Low-Level" Scikit-Learn) ===
     with tab2:
@@ -269,8 +307,8 @@ if filtered_docs:
                 if run_nlp:
                     with st.spinner("Se procesează textul și se antrenează modelul NMF..."):
                         try:
-                            # 1. PREGĂTIRE DATE (Extragem textul din obiectele LitStudy)
-                            # Combinăm titlul cu abstractul (dacă există) pentru fiecare articol
+                            # 1. PREGATIRE DATE (Extragem textul din obiectele LitStudy)
+                            # Combinam titlul cu abstractul (daca exista) pentru fiecare articol
                             text_data = []
                             for doc in filtered_docs:
                                 content = doc.title
@@ -279,7 +317,7 @@ if filtered_docs:
                                 text_data.append(content)
 
                             # 2. VECTORIZARE (TF-IDF)
-                            # Transformăm textul în numere, eliminând cuvintele comune (stop words)
+                            # Transformam textul in numere, eliminand cuvintele comune (stop words)
                             tfidf_vectorizer = TfidfVectorizer(max_df=0.95, min_df=2, stop_words='english')
                             tfidf = tfidf_vectorizer.fit_transform(text_data)
                             feature_names = tfidf_vectorizer.get_feature_names_out()
@@ -287,19 +325,25 @@ if filtered_docs:
                             # 3. ANTRENARE MODEL NMF
                             nmf_model = NMF(n_components=num_topics, random_state=42, init='nndsvd')
                             nmf_model.fit(tfidf)
+                            topics_data = []
+                            for topic_idx, topic in enumerate(nmf_model.components_):
+                                top_indices = topic.argsort()[:-11:-1]
+                                top_w = [feature_names[i] for i in top_indices]
+                                topics_data.append(f"Topic {topic_idx + 1}: {', '.join(top_w)}")
+                            st.session_state['nmf_topics'] = topics_data
                             
                             st.success("Analiză finalizată cu succes (Scikit-Learn Backend)!")
                             st.markdown("### 🧩 Rezultate Identificate:")
 
-                            # 4. EXTRAGERE ȘI AFIȘARE TOPICURI
+                            # 4. EXTRAGERE SI AFISARE TOPICURI
                             for topic_idx, topic in enumerate(nmf_model.components_):
-                                # Luăm top 10 cuvinte cu cea mai mare greutate în topic
+                                # Luam top 10 cuvinte cu cea mai mare greutate in topic
                                 top_indices = topic.argsort()[:-11:-1]
                                 top_words = [feature_names[i] for i in top_indices]
                                 
                                 with st.expander(f"Topic {topic_idx + 1}: {top_words[0].upper()}..."):
                                     st.write(f"**Cuvinte cheie:** {', '.join(top_words)}")
-                                    # Afișăm un mini grafic de bare pentru importanța cuvintelor (Bonus vizual)
+                                    # Afisam un mini grafic de bare pentru importanta cuvintelor (Bonus vizual)
                                     topic_df = pd.DataFrame({
                                         'Cuvânt': top_words,
                                         'Importanță': topic[top_indices]
@@ -310,7 +354,7 @@ if filtered_docs:
                             st.error(f"A apărut o eroare la procesare: {e}")
                             st.info("Verifică dacă articolele selectate au abstracte disponibile.")
 
-    # === TAB 3: REȚELE ===
+    # === TAB 3: RETELE ===
     with tab3:
         st.subheader("Rețea de Co-autori")
         st.info("Această vizualizare arată grupurile de cercetători care colaborează frecvent.")
@@ -321,8 +365,8 @@ if filtered_docs:
                 html_file = "network.html"
                 litstudy.plot_network(net, height="600px")
                 
-                # Hack pentru a citi fișierul generat de litstudy
-                # De obicei îl salvează ca 'citation.html' sau deschide temp
+                # 'Hack' pentru a citi fisierul generat de litstudy
+                # De obicei il salveaza ca 'citation.html' sau deschide temp
                 if os.path.exists("citation.html"):
                     with open("citation.html", 'r', encoding='utf-8') as f:
                         html_src = f.read()
@@ -334,37 +378,169 @@ if filtered_docs:
         except Exception as e:
             st.error(f"Eroare rețea: {e}")
 
-    # === TAB 4: DATE & EXPORT ===
+
+    # === TAB 4: EXPORT DATE ===
     with tab4:
-        st.subheader("Export Date")
+        st.subheader("Generare Raport și Export Date")
         
-        # Conversie la Pandas DataFrame
-        data = []
+        # Pregatire DataFrame (partea ta veche, pastrata)
+        data_export = []
         for d in filtered_docs:
-            data.append({
+            data_export.append({
                 "Titlu": d.title,
                 "An": d.publication_year,
                 "Autori": ", ".join([a.name for a in d.authors]) if d.authors else "",
                 "Sursă": d.source if hasattr(d, 'source') else ""
             })
-        
-        df = pd.DataFrame(data)
-        st.dataframe(df, use_container_width=True)
-        
-        st.markdown("### 📥 Descarcă Raport")
-        col_dl1, col_dl2 = st.columns(2)
-        
-        with col_dl1:
+        df = pd.DataFrame(data_export)
+
+        col_pdf, col_csv = st.columns(2)
+
+        # 1. EXPORT CSV
+        with col_csv:
+            st.markdown("#### 1. Date Brute (CSV)")
+            st.dataframe(df.head(5), use_container_width=True)
             csv = df.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                "📄 Descarcă Tabel (CSV)",
-                data=csv,
-                file_name="litstudy_export.csv",
-                mime="text/csv"
-            )
-        
-        with col_dl2:
-            st.info("💡 Pentru raportul PDF complet, faceți o captură de ecran a Tab-ului 'Dashboard Statistici' și includeți-o în documentație.")
+            st.download_button("📄 Descarcă CSV", data=csv, file_name="litstudy_data.csv", mime="text/csv")
+
+        # 2. EXPORT PDF
+        with col_pdf:
+            st.markdown("#### 2. Raport Oficial (PDF)")
+            st.info("Generează raport cu grafice și concluzii.")
+            
+            if st.button("🖨️ Generează Raport PDF"):
+                # Verificam daca utilizatorul a vizitat Tab-ul 1 pentru a genera graficele
+                if not st.session_state['figures']:
+                    st.error("⚠️ Mergi mai întâi în 'Dashboard Statistici' pentru a se genera graficele!")
+                else:
+                    with st.spinner("Se generează PDF-ul..."):
+                        try:
+                            pdf = PDFReport()
+                            pdf.add_page()
+                            
+                            # A. HEADER INFO
+                            pdf.chapter_title(f"Rezumat: {len(filtered_docs)} articole analizate")
+                            if years:
+                                pdf.chapter_body(f"Interval ani: {min(years)} - {max(years)}")
+                            
+                            # B. TOP AUTORI (TEXT)
+                            if filtered_docs:
+                                authors_flat = [a.name for d in filtered_docs for a in d.authors or []]
+                                top_auth = pd.Series(authors_flat).value_counts().head(5)
+                                txt = "\n".join([f"- {n} ({c})" for n, c in top_auth.items()])
+                                pdf.chapter_title("Top 5 Autori")
+                                pdf.chapter_body(txt)
+
+                            # C. INSERARE GRAFICE SALVATE
+                            pdf.chapter_title("Vizualizare Grafica")
+                            
+                            # Definim descrieri profesionale pentru fiecare tip de grafic
+                            info_grafice = {
+                                'years': {
+                                    'titlu': "1. Evolutia Temporala a Publicatiilor",
+                                    'desc': "Acest grafic ilustreaza distributia articolelor pe ani. Se poate observa tendinta de crestere sau scadere a interesului academic pentru acest subiect in perioada selectata."
+                                },
+                                'authors': {
+                                    'titlu': "2. Top 10 Cei Mai Productivi Autori",
+                                    'desc': "Analiza autorilor evidentiaza cercetatorii cu cel mai mare numar de contributii in setul de date. Acestia sunt liderii de opinie in domeniu."
+                                },
+                                'sources': {
+                                    'titlu': "3. Principalele Surse de Publicare",
+                                    'desc': "Graficul prezinta jurnalele si conferintele unde au aparut cele mai multe articole, indicand unde se poarta discutiile relevante."
+                                },
+                                'wordcloud': {
+                                    'titlu': "4. Analiza Vizuala a Cuvintelor Cheie",
+                                    'desc': "Norul de cuvinte (Word Cloud) evidentiaza termenii cei mai frecventi din titlurile articolelor, oferind o imagine rapida a terminologiei dominante."
+                                }
+                            }
+
+                            # Iteram prin graficele salvate
+                            temp_files = []
+                            # Iteram prin graficele salvate
+                            for name, fig_obj in st.session_state['figures'].items():
+                                with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmp:
+                                    # Salvam imaginea temporar
+                                    fig_obj.savefig(tmp.name, bbox_inches='tight', dpi=100)
+                                    temp_files.append(tmp.name)
+                                    
+                                    # 1. LOGICA INTELIGENTĂ DE PAGINARE
+                                    # O pagina A4 are ~297mm inaltime. 
+                                    # Daca cursorul e mai jos de 200mm, nu mai avem loc de grafic + text.
+                                    # Fortam pagina noua CA SA TINEM TITLUL LANGA GRAFIC.
+                                    if pdf.get_y() > 200: 
+                                        pdf.add_page()
+                                    
+                                    # Verificam daca avem descrieri "premium"
+                                    if name in info_grafice:
+                                        titlu_afisat = info_grafice[name]['titlu']
+                                        descriere_afisata = info_grafice[name]['desc']
+                                    else:
+                                        titlu_afisat = f"Figura: {name.upper()}"
+                                        descriere_afisata = ""
+
+                                    # 2. Titlul Graficului
+                                    pdf.set_font('Arial', 'B', 11)
+                                    pdf.cell(0, 8, clean_text(titlu_afisat), 0, 1)
+                                    
+                                    # 3. Descrierea
+                                    if descriere_afisata:
+                                        pdf.set_font('Arial', 'I', 9)
+                                        pdf.multi_cell(0, 5, clean_text(descriere_afisata))
+                                        pdf.ln(2)
+
+                                    # 4. Imaginea
+                                    # O punem centrata, latime 160mm
+                                    try:
+                                        pdf.image(tmp.name, w=160, x=25)
+                                    except:
+                                        pdf.cell(0, 10, "Eroare la incarcarea imaginii", 1, 1)
+                                        
+                                    pdf.ln(10) # Spatiu dupa grafic pentru a respira
+
+                            # D. TOPIC MODELING
+                            if st.session_state['nmf_topics']:
+                                pdf.add_page()
+                                pdf.chapter_title("Analiza Semantica (Topic Modeling)")
+                                
+                                # Setam culoarea de fundal pentru un aspect modern (gri foarte deschis)
+                                pdf.set_fill_color(245, 245, 245)
+                                
+                                for t in st.session_state['nmf_topics']:
+                                    # Spargem textul in: "Topic X" si "cuvinte"
+                                    # Exemplu t: "Topic 1: mere, pere, prune"
+                                    parts = t.split(":", 1) 
+                                    if len(parts) == 2:
+                                        title = parts[0].strip() # "Topic 1"
+                                        content = parts[1].strip() # "mere, pere..."
+                                        
+                                        # 1. Scriem Titlul Topic-ului cu BOLD
+                                        pdf.set_font('Arial', 'B', 11)
+                                        pdf.cell(30, 10, title + ":", 0, 0) # Celula nu face line break
+                                        
+                                        # 2. Scriem cuvintele Normal
+                                        pdf.set_font('Arial', '', 11)
+                                        pdf.multi_cell(0, 10, clean_text(content))
+                                        
+                                        # 3. Adaugam o linie mica de spatiu pentru aerisire
+                                        pdf.ln(2)
+                                    else:
+                                        # Fallback daca formatul e ciudat
+                                        pdf.chapter_body(t)     
+
+                            # E. DESCARCARE
+                            pdf_byte = pdf.output(dest='S').encode('latin-1')
+                            st.download_button(
+                                "📥 Descarcă PDF Final", 
+                                data=pdf_byte, 
+                                file_name="raport_litstudy.pdf", 
+                                mime="application/pdf"
+                            )
+                            
+                            # Cleaning
+                            for tf in temp_files: os.remove(tf)
+
+                        except Exception as e:
+                            st.error(f"Eroare PDF: {e}")
 
 elif not docs:
     st.info("👈 Începe prin a căuta un termen sau a încărca un fișier în meniul din stânga.")
