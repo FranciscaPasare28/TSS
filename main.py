@@ -9,6 +9,23 @@ import pandas as pd
 import streamlit.components.v1 as components
 from wordcloud import WordCloud
 import os
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.FileHandler("debug.log"),   # log în fișier
+        logging.StreamHandler()             # log în consola Streamlit
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
+# Logging pentru debug
+# logger.debug("mesaj")
+# logger.error("eroare")
+
 
 # --- CONFIGURARE PAGINĂ ---
 st.set_page_config(
@@ -49,7 +66,6 @@ def normalize_documents(new_docs):
         # Dacă 'source' lipsește, încercăm să îl găsim în alte câmpuri standard BibTeX/RIS
         if not hasattr(new_doc, 'source') or not new_doc.source or str(new_doc.source).lower() == 'nan':
             new_source = None
-            
             # Ordinea de prioritate pentru a găsi sursa:
             if hasattr(new_doc, 'journal') and new_doc.journal:
                 new_source = new_doc.journal
@@ -64,7 +80,6 @@ def normalize_documents(new_docs):
                 count_fixed += 1
             else:
                 new_doc.source = "Unknown" # Ca să nu crape graficul
-
     return new_docs, count_fixed
 
 # LOGICA DE ÎNCĂRCARE
@@ -120,11 +135,11 @@ else:
                         for i, doc in enumerate(docs):
                             if i < len(df_temp):
                                 val = df_temp.iloc[i]['source']
-                                # Ne asigurăm că e text valid
-                                if pd.isna(val) or str(val).lower() == 'nan':
-                                    doc.source = "Unknown"
-                                else:
+                                # Dacă avem o valoare validă în CSV, o punem în obiectul doc
+                                if not pd.isna(val) and str(val).lower() != 'nan':
                                     doc.source = str(val)
+                                    # Putem completa și jurnalul pentru siguranță
+                                    doc.journal = str(val)
                 elif temp_name.endswith(".bib"):
                     docs = litstudy.load_bibtex(temp_name)
                 elif temp_name.endswith(".ris"):
